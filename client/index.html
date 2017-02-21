@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
-    <script type="text/babel" >
+    <script type="text/babel">
+      (function(){
         "use strict";
-    
+        let number = 0;
+        let clientNumber = 5;
+        let numberText;
+        let socket;
+        
+        const sendUpdate = () => {
+          socket.emit('clientUpdate', clientNumber);
+        }
+        
+        const update = (data) => {
+          number = data;
+          numberText.innerHTML = number;
+        }
+        
+        const init = () => {
+          numberText = document.querySelector('#number');
+          socket = io.connect();
+          
+          socket.on('serverUpdate', update);
+          
+          window.onclick = sendUpdate;
+        };
+        
+        window.onload = init;
+      }());
     </script>
-</head>
-<body>
-
-</body>
+  </head>
+  <body>
+    <p>This is a number: <span id="number">0</span></p>
+  </body>
 </html>
