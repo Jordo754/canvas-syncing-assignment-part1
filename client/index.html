@@ -24,6 +24,11 @@
           numberText = document.querySelector('#number');
           socket = io.connect();
           
+          socket.on('connectT', (data) => {
+            number = data;
+            numberText.innerHTML = number;
+          });
+          
           socket.on('serverUpdate', update);
           
           window.onclick = sendUpdate;
